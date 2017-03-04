@@ -15,19 +15,57 @@
 			['北京',90],
 			['上海',50],
 			['福州',10],
-			['广州',50],
-			['成都',90]
+			['广州',100],
+			['成都',110]
 		];
+	var arr1 =[3,4,1,6,5];
 	var list = document.getElementById('aqi-list');
 	(function(){
 		var string = null;
 		for(var i=0;i<aqiData.length;i++){
-			if(aqiData[i][1]>60){
+			if(aqiData[i][1]>60){		//筛选出超过60的城市
 				string = '<li>'+aqiData[i][0]+'</li>';
 				list.innerHTML += string;
-				
 			}
 		}
+
+		//一维数组排序
+		/*function paixu2(data){
+			var i,j=0;
+			for(i=0;i<data.length;i++){
+				for(j=i+1;j<data.length;j++){
+					if(data[i]<data[j]){
+						data[i]=data[j]+data[i];
+						data[j]=data[i]-data[j];
+						data[i]=data[i]-data[j];
+					}
+				}
+				
+			}
+			return data;
+		}
+		var newArr = paixu2(arr1);
+		console.log(newArr);*/
+
+		//二维数组排序
+		function paixu1(data){
+			var a;
+			for(var i =0;i<data.length;i++){
+				for(var j = i+1;j<data.length;j++){
+					if(data[i][1]<data[j][1]){
+						a = data[i];
+						data[i] = data[j];
+						data[j] = a;
+					}
+				}
+			}
+			return data;
+		}
+		var newArr2 = paixu1(aqiData); //从高到低排序
+		var lis = document.createElement('li');
+		lis.innerHTML = '最高为：'+newArr2[0];
+		list.appendChild(lis);
 	})();
+
 </script>
 </html>
