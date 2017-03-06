@@ -34,13 +34,12 @@
 	var lis = source.getElementsByTagName('li');
 	var resort = document.getElementById('resort');
 	var btn = document.getElementById('sort-btn');
-	console.log(lis.length);
+	
 	function getData() {
 		var data = new Array();
 		for(var i = 0;i<lis.length;i++){
 			var str = lis[i].innerText;
-			data[i] = str.split('：');
-			console.log(data[i]);
+			data[i] = str.split('：'); //用split切割字符串并放入数组
 		}
 	  	return data;
 	}
@@ -53,16 +52,12 @@
 	function sortAqiData(data) {
 		for(var i =0;i<data.length;i++){
 			for(var j =i+1;j<data.length;j++){
-				console.log(data[i][1]+'----'+data[j][1]);
 				if(data[i][1]>data[j][1]){
 					a = data[j];
 					data[j] = data[i];
 					data[i] = a;
 				}
 			}
-		}
-		for(var j = 0;j<data.length;j++){
-			console.log(data[j]);
 		}
 		return data;
 	}
