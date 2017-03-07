@@ -46,7 +46,7 @@
 <body>
 	<div id="box">
 		<div id="top">
-			<input type="text" id="ipt" >
+			<input type="number" id="ipt" >
 			<button id="leftIn">左进</button>
 			<button id="rightIn">右进</button>
 			<button id="leftOut">左出</button>
@@ -64,14 +64,12 @@
 	var leftOut = document.getElementById('leftOut');
 	var rightOut = document.getElementById('rightOut');
 	var bottom = document.getElementById('bottom')
-	
-	function createLi(num,direction){
-		if(bottom.innerText !== ''){
-			var li = document.createElement('li');
-			var lis = document.getElementsByTagName('li');
-			li.innerText = num;
+	var arr = new Array();	//创建全局变量arr
+	function createLi(){	//刷新li
+		var lis ='';
+		//作废的代码
+		/*if(bottom.innerText !== ''){
 			if(direction){
-				// console.log(lis.length);
 				bottom.insertBefore(li,document.getElementsByTagName('li')[0]);
 				console.log('insertBeforeL');
 			}else{
@@ -79,84 +77,70 @@
 				console.log('insertBeforeR');
 			}
 		}else{
-			var li = document.createElement('li');
-			/*var lis = document.getElementsByTagName('li');
-			console.log(lis.length);*/
-			li.innerText = num;
 			bottom.appendChild(li);
 			console.log('append');
+		}*/
+		console.log(arr.length+'-----');
+		for(var i =0,len = arr.length;i<len;i++){
+			lis += '<li ele_ind="'+i+'">'+arr[i]+'</li>';
+		}
+		bottom.innerHTML = lis;
+	}
+	function LeftIn(){
+		if(ipt.value!==''){	//查看是否有值
+			var num = ipt.value;
+			arr.unshift(num);	
+			createLi(num);
 		}
 	}
-	function LeftIn(arr){
-		if(ipt.value!==''){
-			var num = ipt.value;	
-			createLi(num,1);
-			arr.unshift(num);
-		}
-		return arr;
-	}
-	function LeftOut(arr){
-		console.log(bottom.firstChild);
-		bottom.removeChild(bottom.firstChild);
+	function LeftOut(){
 		var a = arr.shift();
 		alert(a);
-		return arr;
 	}
-	function RightIn(arr){
+	function RightIn(){
 		if(ipt.value!==''){
-			createLi(ipt.value,0);
 			arr.push(ipt.value);
+			createLi(ipt.value);
 		}
 	}
-	function RightOut(arr){
-		bottom.removeChild(bottom.lastChild);
-		arr.pop();
-		var a = arr.shift();
+	function RightOut(){
+		var a = arr.pop();
 		alert(a);
-		return arr;
 	}
 	function main(){
-		var arr = new Array();var i = 0;
-		// leftIn.onclick = LeftIn(arr);
-		leftIn.onclick = function(){
-			LeftIn(arr);
-			console.log(arr);
+		leftIn.onclick = function(){ //左入点击
+			LeftIn();
+			createLi();
 		}
-		leftOut.onclick = function(){
-			LeftOut(arr);
-			console.log(arr);
+		leftOut.onclick = function(){//左出点击
+			LeftOut();
+			createLi();
 		}
-		rightIn.onclick = function(){
-			RightIn(arr);
-			console.log(arr);
+		rightIn.onclick = function(){//右入点击
+			RightIn();
+			createLi();
 		}
-		rightOut.onclick = function(){
-			RightOut(arr);
-			console.log(arr);
+		rightOut.onclick = function(){//右出点击
+			RightOut();
+			createLi();
 		}
-		
-		// var time = setInterval(function(){
-		// 	console.log('aa');
-		// 	var lis = document.getElementsByTagName('li');
-		// 	document.onclick = function(){
-		// 		console.log(this+'!');
-		// 	}
-		// },100);
 		var lis = document.getElementsByTagName('li');
-		console.log(lis.length)
-		lis.onclick = function(){
-			console.log(this);
-		}
-		document.onclick = function(ev){
-			var ev = window.event;
-			var targetName = ev.target;
-			console.log(ev.target);
-			if(targetName == 'li'){
-				console.log('li'+this);
+		var time = setInterval(function(){
+			for(var i =0,len = lis.length;i<len;i++){
+				lis[i].addEventListener('click',clickDel);
 			}
-		}
+		},1000)
 	}
 
+	function clickDel(ev){	//点击数字后删除
+		var ev = ev||window.event;
+		var tg = ev.target;
+		bottom.removeChild(this);
+		var ele_ind = tg.getAttribute('ele_ind');	//获取ele_ind值
+		arr.splice(ele_ind,1);	//根据获取的数组下标删除元素
+		createLi();	
+		console.log(arr);
+	}
 	main();
 	
 </script>
