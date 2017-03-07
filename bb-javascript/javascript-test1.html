@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>test1</title>
+	<style>
+		*{
+			padding:0;margin:0;
+		}
+		#box{
+			height:100px;width:500px;
+			background:#ccc;
+			margin:20px auto;
+		}
+		#top{
+			height:30px;width:500px;
+			background:#ffffff;
+		}
+		#bottom{
+			height:70px;width:500px;
+			display:block;
+			list-style:none;
+			overflow:hidden;
+		}
+		#bottom li{
+			display:block;float:left;
+			height:50px;width:50px;
+			background:red;
+			text-align: center;
+			margin:10px 5px;
+			font-size:20px;line-height: 50px;
+			color:#ffffff;
+		}
+		#leftIn,#rightIn,#leftOut,#rightOut{
+			height:25px;width:60px;
+			margin-left:15px;
+			border-radius: 5px;
+			text-align: center;
+			border-style: none;
+		}
+		#leftOut,#rightOut{
+			float:right;
+		}
+	</style>
+</head>
+<body>
+	<div id="box">
+		<div id="top">
+			<input type="text" id="ipt" >
+			<button id="leftIn">左进</button>
+			<button id="rightIn">右进</button>
+			<button id="leftOut">左出</button>
+			<button id="rightOut">右出</button>
+		</div>
+		<ul id="bottom">
+			
+		</ul>
+	</div>
+</body>
+<script>
+	var ipt = document.getElementById('ipt');
+	var leftIn = document.getElementById('leftIn');
+	var rightIn = document.getElementById('rightIn');
+	var leftOut = document.getElementById('leftOut');
+	var rightOut = document.getElementById('rightOut');
+	var bottom = document.getElementById('bottom')
+	
+	function createLi(num,direction){
+		if(bottom.innerText !== ''){
+			var li = document.createElement('li');
+			var lis = document.getElementsByTagName('li');
+			li.innerText = num;
+			if(direction){
+				// console.log(lis.length);
+				bottom.insertBefore(li,document.getElementsByTagName('li')[0]);
+				console.log('insertBeforeL');
+			}else{
+				bottom.appendChild(li);
+				console.log('insertBeforeR');
+			}
+		}else{
+			var li = document.createElement('li');
+			/*var lis = document.getElementsByTagName('li');
+			console.log(lis.length);*/
+			li.innerText = num;
+			bottom.appendChild(li);
+			console.log('append');
+		}
+	}
+	function LeftIn(arr){
+		if(ipt.value!==''){
+			var num = ipt.value;	
+			createLi(num,1);
+			arr.unshift(num);
+		}
+		return arr;
+	}
+	function LeftOut(arr){
+		console.log(bottom.firstChild);
+		bottom.removeChild(bottom.firstChild);
+		var a = arr.shift();
+		alert(a);
+		return arr;
+	}
+	function RightIn(arr){
+		if(ipt.value!==''){
+			createLi(ipt.value,0);
+			arr.push(ipt.value);
+		}
+	}
+	function RightOut(arr){
+		bottom.removeChild(bottom.lastChild);
+		arr.pop();
+		var a = arr.shift();
+		alert(a);
+		return arr;
+	}
+	function main(){
+		var arr = new Array();var i = 0;
+		// leftIn.onclick = LeftIn(arr);
+		leftIn.onclick = function(){
+			LeftIn(arr);
+			console.log(arr);
+		}
+		leftOut.onclick = function(){
+			LeftOut(arr);
+			console.log(arr);
+		}
+		rightIn.onclick = function(){
+			RightIn(arr);
+			console.log(arr);
+		}
+		rightOut.onclick = function(){
+			RightOut(arr);
+			console.log(arr);
+		}
+		
+		// var time = setInterval(function(){
+		// 	console.log('aa');
+		// 	var lis = document.getElementsByTagName('li');
+		// 	document.onclick = function(){
+		// 		console.log(this+'!');
+		// 	}
+		// },100);
+		var lis = document.getElementsByTagName('li');
+		console.log(lis.length)
+		lis.onclick = function(){
+			console.log(this);
+		}
+		document.onclick = function(ev){
+			var ev = window.event;
+			var targetName = ev.target;
+			console.log(ev.target);
+			if(targetName == 'li'){
+				console.log('li'+this);
+			}
+		}
+	}
+
+	main();
+	
+</script>
+</html>
