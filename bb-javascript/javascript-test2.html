@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>test1</title>
+	<style>
+		*{
+			padding:0;margin:0;
+		}
+		#box{
+			width:500px;
+			background:#ccc;
+			margin:20px auto;
+		}
+		#top{
+			height:30px;width:500px;
+			background:#ffffff;
+		}
+		#bottom{
+			height:100px;width:500px;padding-left:10px;
+			display:block;
+			overflow:hidden;
+		}
+		#bottom li{
+			display:block;float:left;
+			width:20px;
+			background:red;
+			text-align: center;
+			margin:10px 1px;
+			font-size:10px;
+			color:#ffffff;
+		}
+		#leftIn,#rightIn,#leftOut,#rightOut{
+			height:25px;width:60px;
+			margin-left:15px;
+			border-radius: 5px;
+			text-align: center;
+			border-style: none;
+		}
+		#leftOut,#rightOut{
+			float:right;
+		}
+	</style>
+</head>
+<body>
+	<div id="box">
+		<div id="top">
+			<input type="number" id="ipt" placeholder='10-60'>
+			<button id="leftIn">左进</button>
+			<button id="rightIn">右进</button>
+			<button id="leftOut">左出</button>
+			<button id="rightOut">右出</button>
+		</div>
+		<ul id="bottom" style="height:100px;">
+			
+		</ul>
+	</div>
+</body>
+<script>
+	var ipt = document.getElementById('ipt');
+	var leftIn = document.getElementById('leftIn');
+	var rightIn = document.getElementById('rightIn');
+	var leftOut = document.getElementById('leftOut');
+	var rightOut = document.getElementById('rightOut');
+	var bottom = document.getElementById('bottom')
+	var arr = new Array();	//创建全局变量arr
+	function createLi(){	//刷新li
+		var lis ='';
+		console.log('old:'+arr);
+		// for(var i =0;i<arr.length;i++){
+		// 	for(var j =i+1;j<arr.length-1;j++){
+		// 		if(arr[i]>arr[j]){
+		// 			arr[i] = arr[j]+arr[i];
+		// 			arr[j] = arr[i]-arr[j];
+		// 			arr[i] = arr[i]-arr[j];
+		// 		}
+		// 	}
+		// }
+		arr.sort();
+		console.log('new:'+arr);
+		for(var i =0,len = arr.length;i<len;i++){
+			lis += '<li ele_ind="'+i+'" style="height:'+arr[i]+'px">'+arr[i]+'</li>';
+		}
+		bottom.innerHTML = lis;
+	}
+	function LeftIn(){
+		arr.unshift(ipt.value);
+	}
+	function LeftOut(){
+		var a = arr.shift();
+		alert(a);
+	}
+	function RightIn(){
+		arr.push(ipt.value);
+	}
+	function RightOut(){
+		var a = arr.pop();
+		alert(a);
+	}
+	function cleanipt(){
+		ipt.value = '';
+		ipt.focus();
+	}
+	function main(){
+		leftIn.onclick = function(){ //左入点击
+			if(ipt.value>=10&&ipt.value<=99&&arr.length<60){
+				LeftIn();
+				createLi();
+				cleanipt();
+			}else{
+				alert('err');
+			}
+		}
+		leftOut.onclick = function(){//左出点击
+			LeftOut();
+			createLi();
+		}
+		rightIn.onclick = function(){//右入点击
+			if(ipt.value>=10&&ipt.value<=99&&arr.length<60){
+				RightIn();
+				createLi();
+				cleanipt();
+			}else{
+				alert('err');
+			}
+		}
+		rightOut.onclick = function(){//右出点击
+			RightOut();
+			createLi();
+		}
+		var lis = document.getElementsByTagName('li');
+		var time = setInterval(function(){
+			for(var i =0,len = lis.length;i<len;i++){
+				lis[i].addEventListener('click',clickDel);
+			}
+		},1000)
+	}
+
+	function clickDel(ev){	//点击数字后删除
+		var ev = ev||window.event;
+		var tg = ev.target;
+		bottom.removeChild(this);
+		var ele_ind = tg.getAttribute('ele_ind');	//获取ele_ind值
+		arr.splice(ele_ind,1);	//根据获取的数组下标删除元素
+		createLi();	
+		console.log(arr);
+	}
+	main();
+	
+</script>
+</html>
