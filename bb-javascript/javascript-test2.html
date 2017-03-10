@@ -17,9 +17,8 @@
 			background:#ffffff;
 		}
 		#bottom{
-			height:100px;width:500px;padding-left:10px;
+			width:600px;padding-left:10px;
 			display:block;
-			overflow:hidden;
 		}
 		#bottom li{
 			display:block;float:left;
@@ -133,6 +132,7 @@
 			for(var i =0,len = lis.length;i<len;i++){
 				lis[i].addEventListener('click',clickDel);
 			}
+			console.log(i);
 			paixu.addEventListener('click',paixuF);
 		},1000)
 	}
